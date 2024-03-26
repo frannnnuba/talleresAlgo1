@@ -86,7 +86,8 @@ class Funciones {
         int res = 0;
         for (int i = 0; i < numeros.length; i++) {
             if (numeros[i] == buscado) {
-                res = numeros[i];
+                res = i;
+                return res;
             }
         }
         return res;
@@ -117,39 +118,36 @@ class Funciones {
     boolean esPrefijo(String s1, String s2) {
         int l1 = s1.length();
         int l2 = s2.length();
+        boolean res = true;
         if (l1 <= l2) {
-            for (int i = 0;i <s1.length();i++){
-                for (int j =0; j <s2.length();j++){
-                    char a = s1.charAt(i);
-                    char b = s2.charAt(j);
-                    if (a != b) {
-                        return false;
-                    }
-                }    
+            for (int i = 0; i < l1; i++) {
+                char a = s1.charAt(i);
+                char b = s2.charAt(i);
+                if (a != b) {
+                    res = false;
+                    return res;
+                }
             }
+        } else if (l1 > l2) {
+            res = false;
+            return res;
         }
-        else if (l1 > l2) {
-            return false;
-        }
-        return true;
-    }    
-
+        return res;
+    }
 
     boolean esSufijo(String s1, String s2) {
         int l1 = s1.length();
         int l2 = s2.length();
+        int inicioSuf = (l2 - l1);
         if (l1 <= l2) {
-            for (int i = l1 -1; i >= 0;i++){
-                for (int j = l2 -1; j >= 0;j--){
-                    char a = s1.charAt(i);
-                    char b = s2.charAt(j);
-                    if (a != b) {
-                        return false;
-                    }
+            for (int i = 0;i < l1; i++) {
+                char a = s1.charAt(i);
+                char b = s2.charAt(i + inicioSuf);
+                if (a != b) {
+                    return false;
                 }
             }
-        }
-        else if (l1 > l2) {
+        } else if (l1 > l2) {
             return false;
         }
         return true;
