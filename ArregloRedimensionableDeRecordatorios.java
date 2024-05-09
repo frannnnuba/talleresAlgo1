@@ -1,33 +1,54 @@
 package aed;
 
-class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
+import java.util.ArrayList;
+import java.util.List;
 
+class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
+    public int longitud = 0;
+    public int indice = 0;
+    // public List<Recordatorio> lista = null;
+    // public ArrayList<Recordatorio> arreglito = null;
+    public Recordatorio nuevoRecord[] = null;
+    public ArregloRedimensionableDeRecordatorios arreglito = null;
+    
     public ArregloRedimensionableDeRecordatorios() {
-        throw new UnsupportedOperationException("No implementada aun");
+        this.nuevoRecord = null;
     }
 
     public ArregloRedimensionableDeRecordatorios(ArregloRedimensionableDeRecordatorios vector) {
-        throw new UnsupportedOperationException("No implementada aun");
+        this.arreglito = new ArregloRedimensionableDeRecordatorios();
+        this.longitud = 0;
     }
 
     public int longitud() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return this.longitud;
     }
 
     public void agregarAtras(Recordatorio i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Recordatorio[] nuevoRecordat = new Recordatorio[this.longitud];
+        this.longitud = this.longitud + 1;
+        this.nuevoRecord = new Recordatorio[this.longitud];
+        for (this.indice = 0; this.indice < this.longitud; this.indice++){
+            nuevoRecordat[indice] = this.nuevoRecord[indice];
+        } 
+        nuevoRecordat[this.longitud] = i;
     }
 
     public Recordatorio obtener(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        if(i>= 0 && i < this.longitud){
+            return this.nuevoRecord[i];
+        }else{
+            return null;
+        }
+        
     }
 
     public void quitarAtras() {
-        throw new UnsupportedOperationException("No implementada aun");
+        ;
     }
 
     public void modificarPosicion(int indice, Recordatorio valor) {
-        throw new UnsupportedOperationException("No implementada aun");
+        ;
 
     }
 

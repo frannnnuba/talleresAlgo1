@@ -27,14 +27,23 @@ public class Recordatorio {
        return this.mensaje;
     }
 
-    // @Override
-    // public String toString() {
-    //     ;
-    // }
+     @Override
+     public String toString() {
+         return this.mensaje + " @ " + this.fecha + " " + this.horario;
+     }
 
-    // @Override
-    // public boolean equals(Object otro) {
-    //     ;
-    // }
+     @Override
+     public boolean equals(Object otro) {
+         if(otro instanceof Recordatorio){
+            Recordatorio record = (Recordatorio) otro;
+            if(this.fecha == record.fecha && this.mensaje == record.mensaje && this.horario == record.horario){
+                return true;
+            }else {
+                return false;
+            }
+         }else{
+            return false;
+         }
+     }
 
 }
