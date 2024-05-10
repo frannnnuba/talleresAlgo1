@@ -15,15 +15,8 @@ public class Agenda {
     }
 
      public void agregarRecordatorio(Recordatorio recordatorio) {
-        this.longitud = this.recordatorios.length;
-         recordatorios = new Recordatorio[this.longitud];
-        
-         for (int i = 0; i < recordatorios.length; i++) {
-             Recordatorio r = this.recordatorios[i];
-             recordatorios[i] = new Recordatorio(r.mensaje(), new Fecha(r.fecha().dia(),r.fecha().mes()),
-                     new Horario(r.horario().hora(), r.horario().minutos()));
-         }
-
+        Recordatorio record = new Recordatorio(this.recordatorio().mensaje(), this); 
+        record.recordatorios = agregarAtras(recordatorio); 
      }
 
     // @Override

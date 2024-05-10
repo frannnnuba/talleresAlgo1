@@ -5,10 +5,7 @@ import java.util.List;
 
 class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
     int longitud = 0;
-    //int indiceUtilizado = 0;
-    //Recordatorio record = null;
     Recordatorio recordatorios[] = null;
-    //ArregloRedimensionableDeRecordatorios res = null;
 
     public ArregloRedimensionableDeRecordatorios() {
     }
