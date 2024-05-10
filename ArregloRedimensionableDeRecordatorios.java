@@ -5,21 +5,21 @@ import java.util.List;
 
 class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
     int longitud = 0;
-    int indiceUtilizado = 0;
-    // List<Recordatorio> lista = null;
-    // public ArrayList<Recordatorio> arreglito = null;
+    //int indiceUtilizado = 0;
+    //Recordatorio record = null;
     Recordatorio recordatorios[] = null;
-    
-    
+    //ArregloRedimensionableDeRecordatorios res = null;
+
     public ArregloRedimensionableDeRecordatorios() {
     }
 
     public ArregloRedimensionableDeRecordatorios(ArregloRedimensionableDeRecordatorios vector) {
-        this.longitud = vector.longitud ;
-        recordatorios = new Recordatorio[vector.recordatorios.length];
+        this.longitud = vector.longitud;
+        recordatorios = new Recordatorio[this.longitud];
         for (int i = 0; i < recordatorios.length; i++) {
             Recordatorio r = vector.recordatorios[i];
-            recordatorios[i] = new Recordatorio(r.mensaje(), new Fecha(r.fecha()), new Horario(r.horario().hora(), r.horario().minutos()));
+            recordatorios[i] = new Recordatorio(r.mensaje(), new Fecha(r.fecha().dia(), r.fecha().mes()),
+                    new Horario(r.horario().hora(), r.horario().minutos()));
         }
     }
 
@@ -28,40 +28,42 @@ class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios 
     }
 
     public void agregarAtras(Recordatorio i) {
-        if (this.indiceUtilizado < this.longitud){
-            for(this.indiceUtilizado = 0; this.indiceUtilizado < this.longitud; this.indiceUtilizado ++){
-                this.Recordatorios[indiceUtilizado] = ;
+        if (this.longitud == 0) {
+            Recordatorio[] nuevorecordatorio = new Recordatorio[1];
+            nuevorecordatorio[0] = i;
+            this.recordatorios = nuevorecordatorio;
+            this.longitud = 1;
+        } else {
+            Recordatorio[] nuevorecordat = new Recordatorio[this.longitud + 1];
+            for (int k = 0; k < nuevorecordat.length - 1; k++) {
+                nuevorecordat[k] = this.recordatorios[k];
             }
+            nuevorecordat[nuevorecordat.length - 1] = i;
+
+            this.recordatorios = nuevorecordat;
+            this.longitud = this.longitud + 1;
         }
-        // Recordatorio[] nuevoRecordat = new Recordatorio[this.longitud+1];
-        // this.longitud = this.longitud + 1;
-        // this.Recordatorios = new Recordatorio[this.longitud];
-        // for (this.indice = 0; this.indice < this.longitud; this.indice++){
-        //     nuevoRecordat[indice] = this.Recordatorios[indice];
-        // } 
-        // nuevoRecordat[this.longitud] = i;
     }
 
     public Recordatorio obtener(int i) {
-        if(i>= 0 && i < this.longitud){
-            return this.Recordatorios[i];
-        }else{
-            return null;
-        }
-        
+        return this.recordatorios[i];
     }
 
     public void quitarAtras() {
-        ;
+        Recordatorio[] nuevorecordat = new Recordatorio[this.longitud -1];
+        for(int i = 0; i < nuevorecordat.length;i++ ){
+            nuevorecordat[i] = this.recordatorios[i];
+        }
+        this.recordatorios = nuevorecordat;
+        this.longitud = this.longitud -1;
     }
 
     public void modificarPosicion(int indice, Recordatorio valor) {
-        ;
-
+            this.recordatorios[indice] = valor;
     }
 
     public ArregloRedimensionableDeRecordatorios copiar() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return new ArregloRedimensionableDeRecordatorios(this);
     }
 
 }

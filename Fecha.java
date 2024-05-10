@@ -8,7 +8,7 @@ public class Fecha {
         this.dia = dia;
         this.mes = mes;
     }
-
+    
     public Fecha(Fecha fecha) {
         this.dia = fecha.dia;
         this.mes = fecha.mes;
