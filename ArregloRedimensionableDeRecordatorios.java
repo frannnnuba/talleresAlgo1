@@ -1,8 +1,5 @@
 package aed;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
     int longitud = 0;
     Recordatorio recordatorios[] = null;

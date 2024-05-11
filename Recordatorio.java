@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.Objects;
-
 public class Recordatorio {
     public String mensaje = null;
     public Fecha fecha = null;

@@ -9,6 +9,15 @@ public class Horario {
         this.minutos = minutos;
     }
 
+    public  Horario(Horario horita) {
+        this.minutos = horita.minutos();
+        this.hora = horita.hora();
+    }
+
+    public Horario horario(){
+        return new Horario(this);
+    }
+
     public int hora() {
         return this.hora;
     }
