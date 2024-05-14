@@ -7,13 +7,13 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     private class Nodo {
         Nodo anterior;
         Nodo siguiente;
-        T valor = null; 
+        T valor; 
     }
 
     public ListaEnlazada() {
     }
 
-    public ListaEnlazada<T> ListaCopiada(ListaEnlazada<T> listita){
+    public ListaEnlazada<T>ListaEnlazada(ListaEnlazada<T> listita){
         ListaEnlazada<T> listaa = new ListaEnlazada<>();
         listaa.longitu = listita.longitu;
         listaa.primero = listita.primero;
@@ -93,41 +93,61 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
      public ListaEnlazada<T> copiar() {
-         return ListaCopiada(this);
+         return ListaEnlazada(this);
+     }
+    
+     @Override
+     public String toString() {
+        StringBuilder palabra =  new StringBuilder();
+        Nodo actual = new Nodo();
+        actual = this.primero;
+        palabra.append("[");
+        for (int i = 0; i < this.longitu -1; i++) {
+            palabra.append(actual.valor);
+            palabra.append(",");
+            actual = actual.siguiente;
+        }
+        palabra.append(this.ultimo.valor);
+        palabra.append("]");
+        return palabra.toString();
      }
 
-    // public ListaEnlazada(ListaEnlazada<T> lista) {
-    //     ;
-    // }
-    
-    // @Override
-    // public String toString() {
-    //     ;
-    // }
+     private class ListaIterador implements Iterador<T> {
+         Nodo actual;
+         Nodo siguiente;
+         Nodo anterior;
 
-    // private class ListaIterador implements Iterador<T> {
-    // 	// Completar atributos privados
-
-    //     public boolean haySiguiente() {
-	//         ;
-    //     }
+         public boolean haySiguiente() {
+	        if(this.actual == ListaEnlazada.this.ultimo || ListaEnlazada.this.longitu == 0){
+                return false;
+            }
+            else {
+                return true;
+            }
+         }
         
-    //     public boolean hayAnterior() {
-	//         ;
-    //     }
+         public boolean hayAnterior() {
+            if (ListaEnlazada.this.longitu == 0 || this.actual == ListaEnlazada.this.primero) {
+                return false;
+            }else {
+                return true;
+            }
+            }
 
-    //     public T siguiente() {
-	//         ;
-    //     }
+         public T siguiente() {
+                this.actual = this.actual.siguiente;
+                return this.actual.valor;
+            }
         
+         public T anterior() {
+                this.actual = this.actual.anterior;
+                return this.actual.valor;
+            }
+     }
 
-    //     public T anterior() {
-	//         ;
-    //     }
-    // }
-
-    // public Iterador<T> iterador() {
-	//     ;
-    // }
+     public Iterador<T> iterador() {
+        ListaIterador iteradorcito = new ListaIterador();
+        return iteradorcito;
+     }
 
 }
