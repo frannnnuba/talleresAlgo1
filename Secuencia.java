@@ -43,6 +43,6 @@ interface Secuencia<T> {
      * Retorna un lista con los mismos elementos
      * 
      */
-     public ListaEnlazada<T> copiar();
+    public ListaEnlazada<T> copiar();
 
 }

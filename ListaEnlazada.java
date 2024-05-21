@@ -11,18 +11,26 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public ListaEnlazada() {
+        this.longitu = 0;
+        this.primero = null;
+        this.ultimo = null;
     }
 
-    public ListaEnlazada<T>ListaEnlazada(ListaEnlazada<T> listita){
+    public ListaEnlazada<T> CopiaListaEnlazada(ListaEnlazada<T> listita){
         ListaEnlazada<T> listaa = new ListaEnlazada<>();
         listaa.longitu = listita.longitu;
-        listaa.primero = listita.primero;
-        listaa.ultimo = listita.ultimo;
-        Nodo recorredor = new Nodo();
-        for (recorredor = listita.primero; recorredor != null ;recorredor = recorredor.siguiente){
-            listaa.agregarAtras(recorredor.valor);
+        if (listita.longitu == 0){
+            return listaa;
+        }else{
+            Nodo recorredor = new Nodo();
+            for (recorredor = listita.primero; recorredor != null ;recorredor = recorredor.siguiente){
+                Nodo nuevo = new Nodo();
+                nuevo.valor = recorredor.valor;
+                listaa.agregarAtras(nuevo.valor);
+            }
+            listaa.ultimo = listita.ultimo;
+            return listaa;
         }
-        return listaa;
     }
 
     public int longitud() {
@@ -45,11 +53,12 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     public void agregarAtras(T elem) {
         Nodo nuevo = new Nodo();
         nuevo.valor = elem;
+        if (this.longitud()== 0){
+            this.primero = nuevo;
+        }
         if (this.longitu != 0){
             this.ultimo.siguiente = nuevo;
             nuevo.anterior = this.ultimo;
-        }else{
-            this.primero = nuevo;
         }
         this.ultimo = nuevo; 
         this.longitu++;
@@ -65,22 +74,23 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     public void eliminar(int i) {
         Nodo previo = this.primero;
-        Nodo actual = this.primero.siguiente;
-        if (i == 0) {
-            //actual.anterior = null;
-            this.primero = actual;
+        if (this.longitu == 1){
+            this.primero = null;
+            this.ultimo = null;
+        } else if (i == 0){
+            this.primero = previo.siguiente;
+            previo.siguiente.anterior = null;
+        }else if(i == this.longitu -1){
+            this.ultimo = this.ultimo.anterior;
+            this.ultimo.siguiente = null;
+        }else{
+            for (int j = 0; j < i;j++){
+                previo = previo.siguiente;
+            }
+            previo.anterior.siguiente = previo .siguiente;
+            previo.siguiente.anterior = previo.anterior;
         }
-        if (i == this.longitu -1){
-            actual = this.ultimo.anterior;
-            this.ultimo = actual;
-            //actual.siguiente = null;
-        }
-        for (int j = 1; j < i;j++){
-            previo = actual;
-            actual = actual.siguiente;
-        }
-        previo.siguiente = actual.siguiente;
-        actual.siguiente.anterior = previo;
+        this.longitu--;
     }
 
     public void modificarPosicion(int indice, T elem) {
@@ -93,7 +103,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
      public ListaEnlazada<T> copiar() {
-         return ListaEnlazada(this);
+         return CopiaListaEnlazada(this);
      }
     
      @Override
