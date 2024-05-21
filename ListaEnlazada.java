@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.*;
+
 public class ListaEnlazada<T> implements Secuencia<T> {
     int longitu = 0;
     Nodo primero;
@@ -18,17 +20,15 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     public ListaEnlazada<T> CopiaListaEnlazada(ListaEnlazada<T> listita){
         ListaEnlazada<T> listaa = new ListaEnlazada<>();
-        listaa.longitu = listita.longitu;
         if (listita.longitu == 0){
             return listaa;
         }else{
-            Nodo recorredor = new Nodo();
-            for (recorredor = listita.primero; recorredor != null ;recorredor = recorredor.siguiente){
-                Nodo nuevo = new Nodo();
-                nuevo.valor = recorredor.valor;
-                listaa.agregarAtras(nuevo.valor);
+            Nodo actual = new Nodo();
+            actual = this.primero;
+            while (actual != null){
+                listaa.agregarAtras(actual.valor);
+                actual = actual.siguiente;
             }
-            listaa.ultimo = listita.ultimo;
             return listaa;
         }
     }
@@ -56,11 +56,12 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         if (this.longitud()== 0){
             this.primero = nuevo;
         }
-        if (this.longitu != 0){
+        if (this.ultimo != null){
             this.ultimo.siguiente = nuevo;
             nuevo.anterior = this.ultimo;
         }
         this.ultimo = nuevo; 
+        this.ultimo.siguiente = null;
         this.longitu++;
     }
 
@@ -114,7 +115,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         palabra.append("[");
         for (int i = 0; i < this.longitu -1; i++) {
             palabra.append(actual.valor);
-            palabra.append(",");
+            palabra.append(", ");
             actual = actual.siguiente;
         }
         palabra.append(this.ultimo.valor);
@@ -124,11 +125,16 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
      private class ListaIterador implements Iterador<T> {
          Nodo actual;
-         Nodo siguiente;
-         Nodo anterior;
+         int dedito = 0;
+
+         public ListaIterador() {
+            if (ListaEnlazada.this.primero != null) {
+                this.actual = ListaEnlazada.this.primero;
+            }
+        }
 
          public boolean haySiguiente() {
-	        if(this.actual == ListaEnlazada.this.ultimo || ListaEnlazada.this.longitu == 0){
+	        if(this.actual.equals(ListaEnlazada.this.ultimo) || ListaEnlazada.this.longitu == 0){
                 return false;
             }
             else {
@@ -145,19 +151,29 @@ public class ListaEnlazada<T> implements Secuencia<T> {
             }
 
          public T siguiente() {
-                this.actual = this.actual.siguiente;
-                return this.actual.valor;
+            if (haySiguiente()){
+                    Nodo nodito = this.actual ;
+                    this.actual = this.actual.siguiente;
+                    this.dedito ++;
+                    return nodito.valor; 
+            }else{
+                return null;
+            }
             }
         
          public T anterior() {
+            if(hayAnterior()){
                 this.actual = this.actual.anterior;
+                this.dedito--;
                 return this.actual.valor;
+            }else{
+                return null;
+            }    
             }
      }
 
      public Iterador<T> iterador() {
-        ListaIterador iteradorcito = new ListaIterador();
-        return iteradorcito;
+        return new ListaIterador();
      }
 
 }
