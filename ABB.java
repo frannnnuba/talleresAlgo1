@@ -28,6 +28,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         this.raiz = null;
         this.cardinal = 0;
         this.altura = 0;
+        this.actual = null;
     }
 
     public int cardinal() {
@@ -60,14 +61,19 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     public void insertar(T elem) {
         this.actual = this.raiz; 
-        if(elem.compareTo(this.raiz.valor) == 0){
-            ;
-        }
         if (elem.compareTo(this.raiz.valor) < 0){
             while(this.actual.izq != null && elem.compareTo(this.actual.valor) < 0){
                 this.actual = this.actual.izq;
             }
+            while(this.actual.der != null && elem.compareTo(this.actual.valor) > 0){
+                this.actual = this.actual.der;
+            }
             this.actual.valor = elem;
+        }
+        if (elem.compareTo(this.raiz.valor) > 0){
+            while(this.actual.der != null && elem.compareTo(this.actual.valor) < 0){
+                this.actual = this.actual.izq;
+            }
             while(this.actual.der != null && elem.compareTo(this.actual.valor) > 0){
                 this.actual = this.actual.der;
             }
@@ -75,10 +81,42 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
         
     }
-    }
+    
 
     public boolean pertenece(T elem) {
-        ;
+        this.actual = this.raiz;
+        if(elem.compareTo(this.raiz.valor) < 0){
+            this.actual = this.actual.izq;
+            while(this.actual != null && elem.compareTo(this.raiz.valor) < 0){
+                this.actual = this.actual.izq;
+            }
+            while(this.actual != null && elem.compareTo(this.raiz.valor) > 0){
+                this.actual = this.actual.der;
+            }
+            if (elem.compareTo(this.actual.valor) == 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        if(elem.compareTo(this.raiz.valor) > 0){
+            this.actual = this.actual.der;
+            while(this.actual != null && elem.compareTo(this.raiz.valor) < 0){
+                this.actual = this.actual.izq;
+            }
+            while(this.actual != null && elem.compareTo(this.raiz.valor) > 0){
+                this.actual = this.actual.der;
+            }
+            if (elem.compareTo(this.actual.valor) == 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        if (elem.compareTo(this.raiz.valor) == 0){
+            return true;
+        }
+        return false; // este es el caso de lista vacia si no entra en ningun otro, lo tenia con if pero rokpia que tenga un return 
     }
 
     public void eliminar(T elem) {
