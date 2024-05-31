@@ -8,7 +8,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private Nodo raiz;
     private int cardinal;
     private int altura;
-    private Nodo actual;
     
     private class Nodo {
         Nodo izq;
@@ -30,7 +29,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         this.raiz = null;
         this.cardinal = 0;
         this.altura = 0;
-        this.actual = null;
     }
 
     public int cardinal() {
@@ -38,61 +36,67 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public T minimo() {
-        this.actual = this.raiz.izq;
-        if (this.actual == null) {
+        Nodo actual = this.raiz.izq;
+        if (actual == null) {
             return this.raiz.valor;
         } else {
-            while (this.actual.izq != null) {
-                this.actual = this.actual.izq;
+            while (actual.izq != null) {
+                actual = actual.izq;
             }
-            return this.actual.valor;
+            return actual.valor;
         }
     }
 
     public T maximo() {
-        this.actual = this.raiz.der;
-        if(this.actual == null){
+        Nodo actual = this.raiz.der;
+        if(actual == null){
             return this.raiz.valor;
         }else{
-            while(this.actual.der != null){
-                this.actual = this.actual.der;
+            while(actual.der != null){
+                actual = actual.der;
             }
-            return this.actual.valor;
+            return actual.valor;
         }
     }
 
     public void insertar(T elem) {
-        this.actual = this.raiz; 
+        Nodo actual = this.raiz; 
         Nodo ainsertar = new Nodo(elem); //nuevo nodo con el valor de elem
         Nodo padreainsertar = null; // padre del nuevo nodo
-        if (this.actual == null){
+        if (actual == null){
             this.raiz = ainsertar; //lista vacia
-        }
-        while (this.actual != null) { //vamos a avanzar a actual mientras no sea vacio
-            padreainsertar = this.actual;
-            if(elem.compareTo(actual.valor) < 0){
-                this.actual = this.actual.izq;
-            }else{
-                this.actual = this.actual.der;
+            this.cardinal ++;
+        }else{
+            if(pertenecee(elem) == false){
+                while (actual != null) { //vamos a avanzar a actual mientras no sea vacio
+                    padreainsertar = actual;
+                    if(elem.compareTo(actual.valor) < 0){
+                        actual = actual.izq;
+                    }else{
+                        actual = actual.der;
+                    }
+                }
+                ainsertar.padre = padreainsertar;
+                if(elem.compareTo(padreainsertar.valor) < 0){
+                    padreainsertar.izq = ainsertar;
+                }
+                if (elem.compareTo(padreainsertar.valor) > 0){
+                    padreainsertar.der = ainsertar;
+                }
+                this.cardinal ++;
             }
-        }
-        ainsertar.padre = padreainsertar;
-        if(elem.compareTo(padreainsertar.valor) < 0){
-            padreainsertar.izq = ainsertar;
-        }
-        if (elem.compareTo(padreainsertar.valor) > 0){
-            padreainsertar.der = ainsertar;
-        }
+            }
+        
     }
     
 
     public boolean pertenece(T elem) {
-        this.actual = this.raiz;
+        Nodo actual = this.raiz;
         while (actual != null && elem.compareTo(actual.valor) != 0){
-            if (elem.compareTo(this.actual.valor) < 0){
-                this.actual = this.actual.izq;
+            if (elem.compareTo(actual.valor) < 0){
+                actual = actual.izq;
             }else{
-                this.actual = this.actual.der;
+                actual = actual.der;
             }
         }
         if(actual == null){
@@ -102,74 +106,41 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }     
     }
 
-    // public void eliminar(T elem) {
-    //     this.actual = this.raiz;
-    //     Nodo padreaeliminar;
-    //     // caso raiz sin hijos 
-    //     if (this.actual.izq == null && this.actual.der == null && elem.compareTo(actual.valor) == 0){
-    //         this.actual = null;
-    //         this.actual.padre = null;
-    //     }
-    //     while(elem.compareTo(this.actual.valor) != 0){ //avanzo el actual y padreaeliminar hasta encontrar el elem
-    //         padreaeliminar = this.actual;
-    //         if(elem.compareTo(this.actual.valor) < 0){
-    //             this.actual = this.actual.izq;
-    //         }else{
-    //             this.actual = this.actual.der;
-    //         }
-    //     }
-    //     //caso no hay rama izq
-    //     if(this.actual.izq == null && this.actual.der != null){
-    //         if(this.actual.valor.compareTo(padreaeliminar.valor) < 0){
-    //             padreaeliminar.izq = this.actual.der;
-    //             this.actual.der = null;
-    //             this.actual.padre = null;
-    //         }else if(this.actual.valor.compareTo(padreaeliminar.valor) > 0){
-    //             padreaeliminar.der = this.actual.der;
-    //             this.actual.der = null;
-    //             this.actual.padre = null;
-    //         }
-    //     } //caso no hay rama derecha
-    //     if(this.actual.izq != null && this.actual.der == null){
-    //         if(this.actual.valor.compareTo(padreaeliminar.valor) < 0){
-    //             padreaeliminar.izq = this.actual.izq;   
-    //             this.actual.izq = null; 
-    //             this.actual.padre = null;
-    //         }else if(this.actual.valor.compareTo(padreaeliminar.valor) > 0){
-    //             padreaeliminar.der = this.actual.izq;
-    //             this.actual.izq = null; 
-    //             this.actual.padre = null;
-    //         }
-    //     }
-    //      // caso sucesor inmediato,buscamos por la rama derecha
-    //      if(actual.izq != null && actual.der != null && elem.compareTo(actual.valor) == 0){
-    //         Nodo sucesor = new Nodo(this.actual.der.valor);
-    //         Nodo padresucesor = new Nodo(sucesor.padre.valor);
-    //         while (sucesor.der != null){
-    //             padresucesor = sucesor;
-    //             sucesor = sucesor.der;
-    //         }
-    //         if (sucesor.izq )
-    //     }
-    // }
+    private boolean pertenecee(T elem) {
+        Nodo actual = this.raiz;
+        while (actual != null && elem.compareTo(actual.valor) != 0){
+            if (elem.compareTo(actual.valor) < 0){
+                actual = actual.izq;
+            }else{
+                actual = actual.der;
+            }
+        }
+        if(actual == null){
+            return false;
+        }else{
+            return elem.compareTo(actual.valor) == 0;
+        }     
+    }
+
     public void eliminar(T elem) {
         Nodo nuevo = new Nodo(elem);
         Nodo padreaeliminar;
-        this.actual = this.raiz;
-        while(elem.compareTo(this.actual.valor) != 0){ //avanzo el actual y padreaeliminar hasta encontrar el elem
-                     padreaeliminar = this.actual;
-                     if(elem.compareTo(this.actual.valor) < 0){
-                         this.actual = this.actual.izq;
+        Nodo actual = this.raiz;
+        if(actual != null){
+        while(elem.compareTo(actual.valor) != 0){ //avanzo el actual y padreaeliminar hasta encontrar el elem
+                     padreaeliminar = actual;
+                     if(elem.compareTo(actual.valor) < 0){
+                         actual = actual.izq;
                      }else{
-                         this.actual = this.actual.der;
+                         actual = actual.der;
                      }
                  }
-        if(this.actual.izq == null && elem.compareTo(actual.valor) == 0){
+        if(actual.izq == null && elem.compareTo(actual.valor) == 0){
             transplantar(this, actual, actual.der);
-        }else if( this.actual.der == null && elem.compareTo(actual.valor) == 0){
+        }else if( actual.der == null && elem.compareTo(actual.valor) == 0){
             transplantar(this, actual, actual.izq);
         }else{
-            Nodo sucesor = minimum(this.actual.der);
+            Nodo sucesor = minimum(actual.der);
             if (sucesor != actual.der){
                 transplantar(this, sucesor, sucesor.der);
                 sucesor.der = actual.der;
@@ -179,6 +150,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             sucesor.izq = actual.izq;
             sucesor.izq.padre = sucesor;
         }
+        this.cardinal--;
+    }
     }
     
     private Nodo minimum(Nodo x){
@@ -202,36 +175,48 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public String toString() {
-        return traducido(this);
-    }
-
-    private String traducido(ABB tree){
         StringBuilder palabra = new StringBuilder("{");
-        Nodo act = tree.raiz;
-        Stack<Nodo> stack = new Stack<>();
-        while (!stack.isEmpty() || act != null){
-            while (act != null){
-                stack.push(act);
-                act = act.izq;
-            }
-            act = stack.pop();
-            palabra.append(act.valor);
-            palabra.append(", ");
-            act = act.der;
+        Iterador<T> iterador = new ABB_Iterador();
+        while(iterador.haySiguiente()){
+            palabra.append(iterador.siguiente());
+            palabra.append(",");
         }
+        palabra.append(iterador.siguiente());
         palabra.append("}");
         return palabra.toString();
+    }
+
+    private Nodo sucesor(Nodo n){
+        if(n.der != null){
+            return minimum(n.der);
+        } 
+        else{
+            Nodo padrea = n.padre;
+            while (padrea != null && n == padrea.der){
+                n = padrea;
+                padrea = padrea.padre;
+            }
+            return padrea;
+        }
+
     }
 
     private class ABB_Iterador implements Iterador<T> {
         private Nodo _actual;
 
-        public boolean haySiguiente() {
-            ;
+
+        public ABB_Iterador(){
+            _actual = minimum(raiz);
         }
 
+        public boolean haySiguiente() {            
+            return (sucesor(this._actual) != null);
+        }
+    
         public T siguiente() {
-            ;
+            T adevolver = _actual.valor;
+            _actual = sucesor(this._actual);
+            return adevolver;
         }
     }
 
